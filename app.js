@@ -5,8 +5,21 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import indexRouter from './routes/index.js';
 import userRouter from './routes/users.js';
+import mySql from 'mysql';
 
 const app = express();
+
+// DB 연결
+const db = mySql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root'
+})
+
+db.connect(err => {
+    if (err) throw err;
+    console.log('Connected');
+});
 
 // 미들웨어 등록
 app.set('views', join(resolve(), 'views'));
