@@ -16,6 +16,29 @@ const normalizePort = (val) => {
     return false;
 }
 
+const onError = error => {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    const bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
+
+    // 메시지로 특정 수신 오류 처리
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+        default:
+            throw error;
+    }
+}
+
+
 
 // HTTP 서버 리스닝 이벤트에 대한 이벤트 리스너.
 const onListening = () => {
